@@ -1,0 +1,569 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>LumiGuard | Cuidado Visual</title>
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <header class="header">
+      <div class="logo">
+        👁️
+        <span>LumiGuard</span>
+      </div>
+
+      <div class="badge">🛡️ CUIDADO VISUAL</div>
+    </header>
+
+    <main>
+      <!-- =========================
+     PRESENTACIÓN
+========================= -->
+
+      <section class="hero">
+        <div class="hero-text">
+          <span class="mini-title">ASISTENTE DE CUIDADO VISUAL</span>
+
+          <h1>
+            Cuida tus ojos.
+            <br />
+            Cuida tu tiempo.
+          </h1>
+
+          <p>
+            LumiGuard analiza tu tiempo frente a la pantalla y las condiciones
+            de iluminación para ayudarte a crear mejores hábitos durante tus
+            sesiones.
+          </p>
+
+          <button
+            class="main-button"
+            id="botonProteccion"
+            onclick="activarProteccion()"
+          >
+            🛡️ ACTIVAR PROTECCIÓN
+          </button>
+        </div>
+
+        <div class="eye-card">
+          <div class="eye" id="ojo">👁️</div>
+
+          <h2 id="estado">INACTIVO</h2>
+
+          <p>Índice de atención</p>
+
+          <div class="progress-container">
+            <div class="progress-bar" id="barraRiesgo"></div>
+          </div>
+
+          <strong id="porcentaje">0%</strong>
+        </div>
+      </section>
+
+      <!-- =========================
+     CONFIGURACIÓN
+========================= -->
+
+      <section class="settings-section">
+        <div class="settings-title">⚙️ Configuración de LumiGuard</div>
+
+        <div class="settings-grid">
+          <div class="setting-card">
+            <label for="tiempoUso">⏱️ Tiempo máximo de uso</label>
+
+            <select id="tiempoUso">
+              <option value="30">30 minutos</option>
+
+              <option value="45">45 minutos</option>
+
+              <option value="60" selected>60 minutos</option>
+
+              <option value="90">90 minutos</option>
+
+              <option value="120">120 minutos</option>
+            </select>
+          </div>
+
+          <div class="setting-card">
+            <label for="tiempoDescanso">👀 Tiempo de descanso</label>
+
+            <select id="tiempoDescanso">
+              <option value="5">5 minutos</option>
+
+              <option value="10" selected>10 minutos</option>
+
+              <option value="15">15 minutos</option>
+
+              <option value="20">20 minutos</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================
+     DASHBOARD
+========================= -->
+
+      <section class="dashboard">
+        <div class="info-card">
+          <div class="card-icon">⏱️</div>
+
+          <h3>Tiempo de pantalla</h3>
+
+          <div class="big-number" id="tiempo">00:00</div>
+
+          <p>Tiempo de esta sesión</p>
+        </div>
+
+        <div class="info-card comfort-card">
+          <div class="card-icon">🌙</div>
+
+          <h3>Modo Confort</h3>
+
+          <p id="comfortStatus">Desactivado</p>
+
+          <button
+            class="comfort-button"
+            id="comfortButton"
+            onclick="toggleComfortMode()"
+          >
+            🌙 ACTIVAR
+          </button>
+
+          <small>Reduce la intensidad visual de LumiGuard.</small>
+        </div>
+
+        <div class="info-card">
+          <div class="card-icon">⭐</div>
+
+          <h3>Puntos de cuidado</h3>
+
+          <div class="big-number" id="puntos">0 XP</div>
+
+          <p>Gana XP realizando descansos.</p>
+        </div>
+      </section>
+
+      <!-- =========================
+     CÁMARA
+========================= -->
+
+      <section class="camera-section">
+        <div class="camera-header">
+          <div>
+            <span class="mini-title">SENSOR AMBIENTAL</span>
+
+            <h2>📷 Análisis de iluminación</h2>
+
+            <p>
+              La cámara analiza la iluminación del entorno y genera una
+              estimación de luz.
+            </p>
+          </div>
+
+          <div class="camera-status" id="cameraStatus">⚪ CÁMARA INACTIVA</div>
+        </div>
+
+        <div class="camera-content">
+          <div class="camera-box">
+            <video id="camera" autoplay playsinline></video>
+
+            <div class="camera-placeholder">
+              📷
+
+              <span>Cámara desactivada</span>
+            </div>
+          </div>
+
+          <div class="light-data">
+            <div class="environment">
+              <span>Ambiente detectado</span>
+
+              <strong id="ambiente">Sin analizar</strong>
+            </div>
+
+            <div class="lux-card">
+              <div>
+                <span>💡 Lux estimados</span>
+
+                <strong id="lux">0 lx</strong>
+              </div>
+
+              <div class="lux-description">
+                Estimación basada en la luminosidad captada por la cámara.
+              </div>
+            </div>
+
+            <div class="light-percentage">
+              <div class="light-top">
+                <span>Nivel de iluminación</span>
+
+                <strong id="nivelLuz">0%</strong>
+              </div>
+
+              <div class="light-bar">
+                <div id="barraLuz"></div>
+              </div>
+            </div>
+
+            <div class="brightness-recommendation">
+              <div class="brightness-title">
+                🔆 Brillo recomendado
+
+                <strong id="brilloRecomendado">--%</strong>
+              </div>
+
+              <div class="brightness-scale">
+                <div id="barraBrillo"></div>
+              </div>
+
+              <p id="ajusteBrillo">Esperando análisis de iluminación...</p>
+            </div>
+
+            <div class="recommendation">
+              <span>💡 Recomendación</span>
+
+              <p id="recomendacionBrillo">
+                Activa la cámara para analizar la iluminación.
+              </p>
+            </div>
+
+            <button
+              class="camera-button"
+              id="cameraButton"
+              onclick="alternarCamara()"
+            >
+              📷 ACTIVAR CÁMARA
+            </button>
+
+            <small class="camera-note">
+              La cámara analiza la iluminación en tiempo real. No se guarda ni
+              se envía el video.
+            </small>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================
+     BRILLO
+========================= -->
+
+      <section class="brightness-info">
+        <div class="brightness-icon">🔆</div>
+
+        <div>
+          <h3>Recomendación de brillo</h3>
+
+          <p id="textoBrillo">
+            LumiGuard analizará el ambiente para recomendar un nivel de brillo
+            cómodo.
+          </p>
+        </div>
+      </section>
+
+      <!-- =========================
+     SEMÁFORO
+========================= -->
+
+      <section class="risk-section">
+        <h2>🚦 Indicador de atención</h2>
+
+        <p id="mensaje">Activa LumiGuard para comenzar.</p>
+
+        <div class="traffic-light">
+          <div class="light green" id="verde"></div>
+
+          <div class="light yellow" id="amarillo"></div>
+
+          <div class="light red" id="rojo"></div>
+        </div>
+      </section>
+
+      <!-- =========================
+     LUMI HUMANITO
+========================= -->
+
+      <section class="lumi-section">
+        <div class="lumi-character" id="lumiCharacter">
+          <div class="lumi-head">
+            <div class="lumi-hair"></div>
+
+            <div class="lumi-eye left"></div>
+            <div class="lumi-eye right"></div>
+
+            <div class="lumi-mouth" id="lumiMouth"></div>
+          </div>
+
+          <div class="lumi-body">
+            <div class="lumi-arm left-arm"></div>
+            <div class="lumi-arm right-arm"></div>
+          </div>
+
+          <div class="lumi-feet">
+            <div></div>
+            <div></div>
+          </div>
+        </div>
+
+        <div class="lumi-info">
+          <span>ASISTENTE LUMI</span>
+
+          <h2 id="lumiTitle">¡Hola! Soy Lumi</h2>
+
+          <p id="lumiMessage">
+            Activa la protección y estaré atento a tu sesión.
+          </p>
+        </div>
+      </section>
+
+      <!-- =========================
+     RETO DE DESCANSO
+========================= -->
+
+      <section class="challenge">
+        <div class="challenge-icon">👀</div>
+
+        <div class="challenge-content">
+          <span>RETO DE DESCANSO</span>
+
+          <h2>Dale un descanso a tu vista</h2>
+
+          <p>Tómate unos minutos para alejarte de la pantalla y descansar.</p>
+
+          <div class="rest-timer" id="restTimer">10:00</div>
+
+          <button
+            class="main-button"
+            id="botonDescanso"
+            onclick="iniciarDescanso()"
+          >
+            👀 INICIAR DESCANSO
+          </button>
+        </div>
+      </section>
+
+      <!-- =========================
+     RECOMPENSAS
+========================= -->
+
+      <section class="rewards-section">
+        <div class="rewards-header">
+          <div>
+            <span class="mini-title">SISTEMA DE MOTIVACIÓN</span>
+
+            <h2>🏆 Recompensas de Lumi</h2>
+
+            <p>
+              Completa descansos para ganar XP y desbloquear nuevas recompensas.
+            </p>
+          </div>
+
+          <div class="level-display">
+            <span>NIVEL</span>
+
+            <strong id="nivelGrande">1</strong>
+          </div>
+        </div>
+
+        <div class="xp-progress">
+          <div class="xp-top">
+            <span>Progreso al siguiente nivel</span>
+
+            <strong id="xpTexto">0 / 30 XP</strong>
+          </div>
+
+          <div class="xp-bar">
+            <div id="barraXP"></div>
+          </div>
+        </div>
+
+        <div class="rewards-grid">
+          <div class="reward-card unlocked" id="recompensa1">
+            <div class="reward-icon">🟢</div>
+
+            <h3>Primer descanso</h3>
+
+            <p>Completa tu primer descanso.</p>
+
+            <strong>+10 XP</strong>
+          </div>
+
+          <div class="reward-card locked" id="recompensa2">
+            <div class="reward-icon">⭐</div>
+
+            <h3>Cuidador constante</h3>
+
+            <p>Alcanza el nivel 2.</p>
+
+            <strong>🔒 Bloqueado</strong>
+          </div>
+
+          <div class="reward-card locked" id="recompensa3">
+            <div class="reward-icon">🛡️</div>
+
+            <h3>Protector visual</h3>
+
+            <p>Alcanza el nivel 3.</p>
+
+            <strong>🔒 Bloqueado</strong>
+          </div>
+
+          <div class="reward-card locked" id="recompensa4">
+            <div class="reward-icon">👑</div>
+
+            <h3>Maestro del descanso</h3>
+
+            <strong>Alcanza el nivel 5.</strong>
+
+            <strong>🔒 Bloqueado</strong>
+          </div>
+
+          <div class="reward-card locked" id="recompensa5">
+            <div class="reward-icon">💡</div>
+
+            <h3>Detector de luz</h3>
+
+            <p>Utiliza el sensor ambiental.</p>
+
+            <strong>🔒 Bloqueado</strong>
+          </div>
+
+          <div class="reward-card locked" id="recompensa6">
+            <div class="reward-icon">🌙</div>
+
+            <h3>Amigo de la vista</h3>
+
+            <p>Activa el Modo Confort.</p>
+
+            <strong>🔒 Bloqueado</strong>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================
+     ESTADÍSTICAS
+========================= -->
+
+      <section class="history-section">
+        <div class="history-title">
+          <span class="mini-title">MI ACTIVIDAD</span>
+
+          <h2>📊 Estadísticas de LumiGuard</h2>
+
+          <p>Observa tu progreso durante el uso de LumiGuard.</p>
+        </div>
+
+        <div class="history-grid">
+          <div class="history-card">
+            <span>🖥️</span>
+
+            <strong id="historialSesiones">0</strong>
+
+            <p>Sesiones</p>
+          </div>
+
+          <div class="history-card">
+            <span>☕</span>
+
+            <strong id="historialDescansos">0</strong>
+
+            <p>Descansos</p>
+          </div>
+
+          <div class="history-card">
+            <span>⭐</span>
+
+            <strong id="historialXP">0</strong>
+
+            <p>XP obtenidos</p>
+          </div>
+
+          <div class="history-card">
+            <span>🔥</span>
+
+            <strong id="racha">0</strong>
+
+            <p>Racha de descansos</p>
+          </div>
+
+          <div class="history-card">
+            <span>🏆</span>
+
+            <strong id="historialNivel">1</strong>
+
+            <p>Nivel actual</p>
+          </div>
+
+          <div class="history-card">
+            <span>⏱️</span>
+
+            <strong id="tiempoTotal">00:00</strong>
+
+            <p>Tiempo total</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================
+     ESTADÍSTICAS ANTIGUAS
+========================= -->
+
+      <section class="stats">
+        <div class="stat-card">
+          <span>☕</span>
+
+          <strong id="descansos">0</strong>
+
+          <p>Descansos</p>
+        </div>
+
+        <div class="stat-card">
+          <span>🖥️</span>
+
+          <strong id="sesiones">0</strong>
+
+          <p>Sesiones</p>
+        </div>
+
+        <div class="stat-card">
+          <span>🏆</span>
+
+          <strong id="nivel">1</strong>
+
+          <p>Nivel</p>
+        </div>
+      </section>
+    </main>
+
+    <!-- =========================
+     NOTIFICACIÓN DE RECOMPENSA
+========================= -->
+
+    <div class="reward-popup" id="rewardPopup">
+      <div class="popup-lumi">🤩</div>
+
+      <div>
+        <strong>🎉 ¡RECOMPENSA DESBLOQUEADA!</strong>
+
+        <p id="rewardPopupText">Has conseguido una nueva recompensa.</p>
+      </div>
+    </div>
+
+    <footer>
+      <p>👁️ LumiGuard — Proyecto de cuidado visual</p>
+
+      <small>
+        Solución tecnológica para fomentar hábitos de descanso frente a las
+        pantallas.
+      </small>
+    </footer>
+
+    <canvas id="canvasAnalisis"></canvas>
+
+    <script src="script.js"></script>
+  </body>
+</html>
